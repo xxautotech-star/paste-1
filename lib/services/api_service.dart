@@ -53,17 +53,61 @@ class ApiService {
     return jsonDecode(res.body);
   }
 
-  // Add device
-  static Future<Map> addDevice(String name, String boardType) async {
-    final token = await getToken();
-    final res = await http.post(
-      Uri.parse('$baseUrl/api/devices'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode({'name': name, 'board_type': boardType}),
-    );
-    return jsonDecode(res.body);
-  }
+ static Future<Map> addDevice(String name, String boardType, {
+  String description = '',
+  String icon = '📡',
+  String color = '#00D4FF',
+}) async {
+  final token = await getToken();
+  final res = await http.post(
+    Uri.parse('$baseUrl/api/devices'),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode({
+      'name': name,
+      'board_type': boardType,
+      'description': description,
+      'icon': icon,
+      'color': color,
+    }),
+  );
+  return jsonDecode(res.body);
+}
+// Send command through API to hardware
+static Future<Map> sendCommand(String topic, String command) async {
+  final token = await getToken();
+  final res = await http.post(
+    Uri.parse('$baseUrl/api/commands/send'),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode({'topic': topic, 'command': command}),
+  );
+  return jsonDecode(res.body);
+}
+// Save widgets
+static Future<void> saveWidgets(String deviceId, List widgets) async {
+  final token = await getToken();
+  await http.put(
+    Uri.parse('$baseUrl/api/devices/$deviceId/widgets'),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+    body: jsonEncode({'widgets': widgets}),
+  );
+}
+
+// Load widgets
+static Future<List> loadWidgets(String deviceId) async {
+  final token = await getToken();
+  final res = await http.get(
+    Uri.parse('$baseUrl/api/devices/$deviceId/widgets'),
+    headers: {'Authorization': 'Bearer $token'},
+  );
+  return jsonDecode(res.body);
+}
 }

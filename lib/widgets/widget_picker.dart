@@ -1,41 +1,93 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WidgetPicker extends StatelessWidget {
   final Function(Map) onWidgetSelected;
   const WidgetPicker({super.key, required this.onWidgetSelected});
 
-  final List<Map> availableWidgets = const [
-    {'type': 'toggle', 'label': 'Toggle Switch', 'icon': Icons.toggle_on, 'color': 0xFF00D4FF},
-    {'type': 'slider', 'label': 'Slider', 'icon': Icons.linear_scale, 'color': 0xFF7C3AED},
-    {'type': 'button', 'label': 'Button', 'icon': Icons.radio_button_checked, 'color': 0xFF00E676},
-    {'type': 'joystick', 'label': 'Joystick', 'icon': Icons.gamepad, 'color': 0xFFFFD740},
-    {'type': 'steering', 'label': 'Steering Wheel', 'icon': Icons.sync, 'color': 0xFFFF5252},
-    {'type': 'volume', 'label': 'Volume Control', 'icon': Icons.volume_up, 'color': 0xFF00BCD4},
-    {'type': 'dpad', 'label': 'D-Pad', 'icon': Icons.control_camera, 'color': 0xFFFF9800},
-    {'type': 'gauge', 'label': 'Gauge', 'icon': Icons.speed, 'color': 0xFFE91E63},
+  static final List<Map> availableWidgets = [
+    {
+      'type': 'toggle',
+      'label': 'Toggle Switch',
+      'iconCode': 0xe59e,
+      'color': 0xFF00D4FF,
+    },
+    {
+      'type': 'slider',
+      'label': 'Slider',
+      'iconCode': 0xe3ee,
+      'color': 0xFF7C3AED,
+    },
+    {
+      'type': 'button',
+      'label': 'Button',
+      'iconCode': 0xe061,
+      'color': 0xFF00E676,
+    },
+    {
+      'type': 'joystick',
+      'label': 'Joystick',
+      'iconCode': 0xe30f,
+      'color': 0xFFFFD740,
+    },
+    {
+      'type': 'steering',
+      'label': 'Steering',
+      'iconCode': 0xe627,
+      'color': 0xFFFF5252,
+    },
+    {
+      'type': 'volume',
+      'label': 'Volume',
+      'iconCode': 0xe050,
+      'color': 0xFF00BCD4,
+    },
+    {
+      'type': 'dpad',
+      'label': 'D-Pad',
+      'iconCode': 0xe129,
+      'color': 0xFFFF9800,
+    },
+    {
+      'type': 'gauge',
+      'label': 'Gauge',
+      'iconCode': 0xe576,
+      'color': 0xFFE91E63,
+    },
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(24),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: 40, height: 4,
-            decoration: BoxDecoration(
-              color: Colors.grey[600],
-              borderRadius: BorderRadius.circular(2),
+          Center(
+            child: Container(
+              width: 36,
+              height: 4,
+              decoration: BoxDecoration(
+                color: const Color(0xFF374151),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
           const SizedBox(height: 20),
-          const Text('Choose a Widget',
-              style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 8),
-          const Text('Tap to add to your canvas',
-              style: TextStyle(color: Colors.grey, fontSize: 13)),
-          const SizedBox(height: 24),
+          Text(
+            'ADD WIDGET',
+            style: GoogleFonts.orbitron(
+              color: Colors.white,
+              fontSize: 13,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Tap to add to your control panel',
+            style: GoogleFonts.rajdhani(color: Colors.grey, fontSize: 13),
+          ),
+          const SizedBox(height: 20),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -43,43 +95,59 @@ class WidgetPicker extends StatelessWidget {
               crossAxisCount: 4,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
-              childAspectRatio: 0.8,
+              childAspectRatio: 0.85,
             ),
             itemCount: availableWidgets.length,
             itemBuilder: (context, i) {
               final w = availableWidgets[i];
+              final color = Color(w['color'] as int);
+              final iconCode = (w['iconCode'] as num).toInt();
               return GestureDetector(
-                onTap: () => onWidgetSelected(w),
+                onTap: () => onWidgetSelected({
+                  'type': w['type'],
+                  'label': w['label'],
+                  'iconCode': w['iconCode'],
+                  'color': w['color'],
+                }),
                 child: Container(
                   decoration: BoxDecoration(
                     color: const Color(0xFF1A2234),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Color(w['color'] as int).withOpacity(0.3)),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: color.withOpacity(0.3)),
                   ),
                   padding: const EdgeInsets.all(8),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        width: 44, height: 44,
+                        width: 42,
+                        height: 42,
                         decoration: BoxDecoration(
-                          color: Color(w['color'] as int).withOpacity(0.15),
+                          color: color.withOpacity(0.12),
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: Icon(w['icon'] as IconData,
-                            color: Color(w['color'] as int), size: 24),
+                        child: Icon(
+  IconData(iconCode, fontFamily: 'MaterialIcons'),
+  color: color,
+  size: 22,
+),
                       ),
-                      const SizedBox(height: 8),
-                      Text(w['label'] as String,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600)),
+                      const SizedBox(height: 7),
+                      Text(
+                        w['label'] as String,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.rajdhani(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               );
             },
           ),
-          const SizedBox(height: 16),
         ],
       ),
     );
