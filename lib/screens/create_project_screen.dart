@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../services/api_service.dart';
-import 'credentials_screen.dart';
+import 'canvas_screen.dart';
 
 class CreateProjectScreen extends StatefulWidget {
   const CreateProjectScreen({super.key});
@@ -54,7 +54,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       );
       if (mounted) {
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (_) => CredentialsScreen(device: result)));
+            MaterialPageRoute(builder: (_) => CanvasScreen(device: result)));
       }
     } catch (e) {
       setState(() { error = 'Failed to create project'; });
@@ -74,7 +74,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF111827),
         elevation: 0,
-        leading: BackButton(color: const Color(0xFF00D4FF)),
+        leading: const BackButton(color: Color(0xFF00D4FF)),
         title: Text(
           'NEW PROJECT',
           style: GoogleFonts.orbitron(
@@ -100,10 +100,10 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 decoration: BoxDecoration(
                   color: const Color(0xFF111827),
                   borderRadius: BorderRadius.circular(24),
-                  border: Border.all(color: accentColor.withOpacity(0.5), width: 2),
+                  border: Border.all(color: accentColor.withValues(alpha: 0.5), width: 2),
                   boxShadow: [
                     BoxShadow(
-                      color: accentColor.withOpacity(0.3),
+                      color: accentColor.withValues(alpha: 0.3),
                       blurRadius: 30,
                       spreadRadius: 2,
                     ),
@@ -164,7 +164,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                       duration: const Duration(milliseconds: 200),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? accentColor.withOpacity(0.15)
+                            ? accentColor.withValues(alpha: 0.15)
                             : const Color(0xFF1A2234),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
@@ -175,7 +175,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                         ),
                         boxShadow: isSelected ? [
                           BoxShadow(
-                            color: accentColor.withOpacity(0.3),
+                            color: accentColor.withValues(alpha: 0.3),
                             blurRadius: 8,
                           ),
                         ] : null,
@@ -204,14 +204,14 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                     width: 44, height: 44,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: (c['color'] as Color).withOpacity(0.2),
+                      color: (c['color'] as Color).withValues(alpha: 0.2),
                       border: Border.all(
                         color: c['color'] as Color,
                         width: isSelected ? 3 : 1.5,
                       ),
                       boxShadow: isSelected ? [
                         BoxShadow(
-                          color: (c['color'] as Color).withOpacity(0.5),
+                          color: (c['color'] as Color).withValues(alpha: 0.5),
                           blurRadius: 12,
                           spreadRadius: 2,
                         ),
@@ -234,7 +234,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF111827),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: accentColor.withOpacity(0.3)),
+                border: Border.all(color: accentColor.withValues(alpha: 0.3)),
               ),
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
@@ -251,7 +251,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
 
             if (error.isNotEmpty) ...[
               const SizedBox(height: 8),
@@ -272,7 +271,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                      color: accentColor.withOpacity(0.4),
+                      color: accentColor.withValues(alpha: 0.4),
                       blurRadius: 20,
                       spreadRadius: 2,
                     ),
